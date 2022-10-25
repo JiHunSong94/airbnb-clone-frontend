@@ -24,14 +24,14 @@ export default function Header() {
     onClose: onSignUpClose,
     onOpen: onSignUpOpen,
   } = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
   return (
     <HStack
       justifyContent={"space-between"}
       py={5}
-      px={10}
+      px={40}
       borderBottomWidth={1}
     >
       <Box color={logoColor}>
