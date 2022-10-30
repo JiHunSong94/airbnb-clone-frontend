@@ -15,6 +15,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { logOut } from "../api";
@@ -38,6 +39,7 @@ export default function Header() {
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
   const toast = useToast();
+  const queryClient = useQueryClient();
   const onLogOut = async () => {
     const toastId = toast({
       title: "Login out...",
@@ -45,8 +47,8 @@ export default function Header() {
       status: "loading",
       position: "bottom-right",
     });
-    /* const data = await logOut();
-    console.log(data); */
+    await logOut();
+    queryClient.refetchQueries(["me"]);
     setTimeout(() => {
       toast.update(toastId, {
         status: "success",
