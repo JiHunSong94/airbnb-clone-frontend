@@ -59,17 +59,19 @@ export default function Header() {
           aria-label="Toggle dark mode"
           icon={<Icon />}
         />
-        {!userLoading ? !isLoggedIn ? (
-          <>
-            <Button onClick={onLoginOpen}>Log in</Button>
-            <LightMode>
-              <Button onClick={onSignUpOpen} colorScheme={"red"}>
-                Sign up
-              </Button>
-            </LightMode>
-          </>
-        ) : (
-          <Avatar size={"md"} />
+        {!userLoading ? (
+          !isLoggedIn ? (
+            <>
+              <Button onClick={onLoginOpen}>Log in</Button>
+              <LightMode>
+                <Button onClick={onSignUpOpen} colorScheme={"red"}>
+                  Sign up
+                </Button>
+              </LightMode>
+            </>
+          ) : (
+            <Avatar name={user?.name} src={user?.avatar} size={"md"} />
+          )
         ) : null}
       </HStack>
       <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
