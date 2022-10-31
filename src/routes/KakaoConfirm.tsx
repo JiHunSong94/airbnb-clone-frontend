@@ -14,7 +14,10 @@ export default function KakaoConfirm() {
     const code = x.get("code");
     if (code) {
       console.log(code);
-      return;
+      kakaoLogIn(code);
+    }
+
+    /* if (code) {
       const status = await kakaoLogIn(code);
       if (status === 200) {
         toast({
@@ -25,7 +28,7 @@ export default function KakaoConfirm() {
         queryClient.refetchQueries(["me"]);
         navigate("/");
       }
-    }
+    } */
   };
   useEffect(() => {
     confirmLogin();
