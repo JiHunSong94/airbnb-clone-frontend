@@ -10,18 +10,14 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { FaLock, FaUserNinja } from "react-icons/fa";
-import {
-  IUsernameLoginError,
-  IUsernameLoginSuccess,
-  IUsernameLoginVariables,
-  usernameLogIn,
-} from "../api";
+import { usernameLogIn } from "../api";
 import SocialLogin from "./SocialLogin";
 
 interface LoginModalProps {
@@ -39,27 +35,19 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IForm>();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const mutation = useMutation<
-    IUsernameLoginSuccess,
-    IUsernameLoginError,
-    IUsernameLoginVariables
-  >(usernameLogIn, {
-    onMutate: () => {
-      console.log("mutation starting");
-    },
-    onSuccess: (data) => {
+  const mutation = useMutation(usernameLogIn, {
+    onSuccess: () => {
       toast({
         title: "welcome back!",
         status: "success",
       });
       onClose();
       queryClient.refetchQueries(["me"]);
-    },
-    onError: (error) => {
-      console.log("mutation has an error");
+      reset();
     },
   });
   const onSubmit = ({ username, password }: IForm) => {
@@ -109,6 +97,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               />
             </InputGroup>
           </VStack>
+          {mutation.isError ? (
+            <Text color="red.500" textAlign={"center"} fontSize="sm">
+              Username or Password are wrong
+            </Text>
+          ) : null}
           <Button
             isLoading={mutation.isLoading}
             type="submit"
