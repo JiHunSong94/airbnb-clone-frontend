@@ -205,8 +205,14 @@ export const checkBooking = ({
   const [, roomPk, dates] = queryKey;
   if (dates) {
     const [firstDate, secondDate] = dates;
-    const [checkIn] = firstDate.toJSON().split("T");
-    const [checkOut] = secondDate.toJSON().split("T");
+    const checkIn = `${firstDate.getFullYear()}-${
+      firstDate.getMonth() + 1
+    }-${firstDate.getDate()}`;
+
+    const checkOut = `${secondDate.getFullYear()}-${
+      secondDate.getMonth() + 1
+    }-${secondDate.getDate()}`;
+    console.log(checkIn, checkOut);
     return instance
       .get(
         `rooms/${roomPk}/bookings/check?check_in=${checkIn}&check_out=${checkOut}`

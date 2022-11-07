@@ -19,7 +19,8 @@ import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
   const { roomPk } = useParams();
@@ -36,7 +37,6 @@ export default function RoomDetail() {
       enabled: dates !== undefined,
     }
   );
-  console.log(checkBookingData, isCheckingBooking);
   return (
     <Box
       mt={10}
@@ -45,6 +45,9 @@ export default function RoomDetail() {
         lg: 40,
       }}
     >
+      <Helmet>
+        <title>{data ? data.name : "Loading..."}</title>
+      </Helmet>
       <Skeleton w="25%" height={"43px"} isLoaded={!isLoading}>
         <Heading>{data?.name}</Heading>
       </Skeleton>
