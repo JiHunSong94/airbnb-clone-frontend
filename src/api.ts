@@ -139,14 +139,15 @@ export interface IUploadRoomVariables {
   category: number;
 }
 
-export const uploadRoom = (variables: IUploadRoomVariables) =>
-  instance
+export const uploadRoom = (variables: IUploadRoomVariables) => {
+  return instance
     .post(`rooms/`, variables, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
     })
     .then((response) => response.data);
+};
 
 export const getUploadURL = () =>
   instance
@@ -212,11 +213,24 @@ export const checkBooking = ({
     const checkOut = `${secondDate.getFullYear()}-${
       secondDate.getMonth() + 1
     }-${secondDate.getDate()}`;
-    console.log(checkIn, checkOut);
     return instance
       .get(
         `rooms/${roomPk}/bookings/check?check_in=${checkIn}&check_out=${checkOut}`
       )
       .then((response) => response.data);
   }
+};
+
+export interface IEditRoom {
+  data: IUploadRoomVariables;
+  roomPk?: string;
+}
+export const editRoom = ({ data, roomPk }: IEditRoom) => {
+  return instance
+    .put(`rooms/${roomPk}`, data, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
 };

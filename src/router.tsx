@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import RoomDetail from "./components/RoomDetail";
 import Root from "./components/Root";
+import EditRoomDetail from "./routes/EditRoomDetail";
 import GithubConfirm from "./routes/GithubConfirm";
 import Home from "./routes/Home";
 import KakaoConfirm from "./routes/KakaoConfirm";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "rooms/:roomPk/photos",
         element: <UploadPhotos />,
+      },
+      {
+        path: "rooms/:roomPk/editroom",
+        element: <EditRoomDetail />,
       },
       {
         path: "social",

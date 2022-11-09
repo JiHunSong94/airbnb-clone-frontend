@@ -44,6 +44,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       toast({
         title: "welcome back!",
         status: "success",
+        duration: 1500,
+        onCloseComplete: () => {
+          window.location.reload();
+        },
       });
       onClose();
       queryClient.refetchQueries(["me"]);

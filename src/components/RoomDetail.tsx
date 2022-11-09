@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import Calendar from "react-calendar";
@@ -25,9 +25,10 @@ import { Helmet } from "react-helmet";
 export default function RoomDetail() {
   const { roomPk } = useParams();
   const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-  const { isLoading: isReviewsLoading, data: reviewsData } = useQuery<
-    IReview[]
-  >([`rooms`, roomPk, `reviews`], getRoomReviews);
+  const { data: reviewsData } = useQuery<IReview[]>(
+    [`rooms`, roomPk, `reviews`],
+    getRoomReviews
+  );
   const [dates, setDates] = useState<Date[]>();
   const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
     ["check", roomPk, dates],
@@ -49,7 +50,12 @@ export default function RoomDetail() {
         <title>{data ? data.name : "Loading..."}</title>
       </Helmet>
       <Skeleton w="25%" height={"43px"} isLoaded={!isLoading}>
-        <Heading>{data?.name}</Heading>
+        <HStack>
+          <Heading>{data?.name}</Heading>
+          <Link to={`/rooms/${roomPk}/editroom`}>
+            {data?.is_owner ? <Button colorScheme={"red"}>Edit</Button> : null}
+          </Link>
+        </HStack>
       </Skeleton>
       <Grid
         mt={8}

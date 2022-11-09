@@ -59,6 +59,10 @@ export default function Header() {
           status: "success",
           title: "Done!",
           description: "See you later!",
+          duration: 1500,
+          onCloseComplete: () => {
+            window.location.reload();
+          },
         });
       }
     },
@@ -112,8 +116,8 @@ export default function Header() {
               <MenuList>
                 <Link to="/rooms/upload">
                   {user?.is_host ? <MenuItem>Upload room</MenuItem> : null}
-                  <MenuItem onClick={onLogOut}>Log out</MenuItem>
                 </Link>
+                <MenuItem onClick={onLogOut}>Log out</MenuItem>
               </MenuList>
             </Menu>
           )
