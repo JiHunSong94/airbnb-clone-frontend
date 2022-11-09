@@ -8,19 +8,23 @@ import {
   Heading,
   HStack,
   Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
   Skeleton,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaUserFriends } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { checkBooking, getRoom, getRoomReviews } from "../api";
+import { bookingRoom, checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import { useForm } from "react-hook-form";
 
 export default function RoomDetail() {
   const { roomPk } = useParams();
@@ -38,6 +42,11 @@ export default function RoomDetail() {
       enabled: dates !== undefined,
     }
   );
+  const { register, watch } = useForm();
+  const onBookingClick = () => {
+    const guests = watch("guests");
+    bookingRoom({ dates, roomPk, guests });
+  };
   return (
     <Box
       mt={10}
@@ -159,12 +168,20 @@ export default function RoomDetail() {
             maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)}
             selectRange
           />
+          <InputGroup pt={5}>
+            <InputLeftAddon children={<FaUserFriends />} />
+            <Input
+              {...register("guests", { required: true })}
+              placeholder="Guests"
+            />
+          </InputGroup>
           <Button
             disabled={!checkBookingData?.ok}
             isLoading={isCheckingBooking}
             my={5}
             w="100%"
             colorScheme={"red"}
+            onClick={onBookingClick}
           >
             Make Booking
           </Button>

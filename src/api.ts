@@ -209,7 +209,6 @@ export const checkBooking = ({
     const checkIn = `${firstDate.getFullYear()}-${
       firstDate.getMonth() + 1
     }-${firstDate.getDate()}`;
-
     const checkOut = `${secondDate.getFullYear()}-${
       secondDate.getMonth() + 1
     }-${secondDate.getDate()}`;
@@ -233,4 +232,37 @@ export const editRoom = ({ data, roomPk }: IEditRoom) => {
       },
     })
     .then((response) => response.data);
+};
+
+interface IRoomBooking {
+  dates?: Date[];
+  roomPk?: string;
+  guests?: number;
+}
+
+export const bookingRoom = ({ dates, roomPk, guests }: IRoomBooking) => {
+  if (dates) {
+    const [firstDate, secondDate] = dates;
+    const checkIn = `${firstDate.getFullYear()}-${
+      firstDate.getMonth() + 1
+    }-${firstDate.getDate()}`;
+    const checkOut = `${secondDate.getFullYear()}-${
+      secondDate.getMonth() + 1
+    }-${secondDate.getDate()}`;
+    return instance
+      .post(
+        `rooms/${roomPk}/bookings`,
+        {
+          check_in: checkIn,
+          check_out: checkOut,
+          guests,
+        },
+        {
+          headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+          },
+        }
+      )
+      .then((response) => response.data);
+  }
 };
